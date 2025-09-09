@@ -1,6 +1,7 @@
 # Este projeto
-/dados/
-*.ipynb
+# /dados/
+/notebooks/Versoes preliminares/
+# *.ipynb
 
 # Mac OS-specific storage files
 .DS_Store
