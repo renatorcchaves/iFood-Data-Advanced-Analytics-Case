@@ -28,7 +28,7 @@ As informações abaixo demonstrarão como esse projeto foi executado, trazendo 
 
 ### 1) Análise Exploratória
 
-Num primeiro momento para ter maior compreensão da base de dados foi utilizado a biblioteca **YDataProfiling** para obter um relatório pronto, que pode ser visto através do link [EDA_YData_Proling](relatorios/EDA_Case_iFood.html)
+Num primeiro momento para ter maior compreensão da base de dados foi utilizado a biblioteca **YDataProfiling** para obter um relatório pronto, que pode ser visto através do arquivo [EDA_Case_iFood.html](relatorios/EDA_Case_iFood.html) (obs: devido tamanho do arquivo a previsualização não está disponível, sendo necessário fazer download para visualizar)
 
 Posteriormente segui com a análise manual para realizar o tratamento da base de dados, eliminando alguns dados nulos, eliminando alguns outliers, e realizando o processo de *Feature Engineering* para criar variáveis que possam ser úteis para os modelos de segmentação de clientes e de classificação.
 
@@ -36,14 +36,16 @@ Diversas análises gráficas foram feitas e podem ser vistas através do noteboo
 
 Um dos gráficos mais úteis dessa etapa são as correlações das features com a variável 'Response', que demonstra quais clientes responderam positivamente à campanha de marketing piloto
 
-<div align="center"> <img src="relatorios/Correlacao das Features com Response.png" title="Correlações " height="700"/> </div>
+<div align="center"> <img src="relatorios/Correlacao das Features com Response.png" title="Correlações " height="500"/> </div>
 
 
 ### 2) Segmentação dos Clientes - Clusters
 
-Os dados tratados da análise exploratória passaram por etapas de preprocessamento, como One_Hot_Encoder, StandardScaler, PowerTransform e MinMaxScaler para ajuste e normalização de escala, a fim de melhorar os resultados dos modelos de segmentação de clientes. 
+O notebook para essa etapa do projeto pode ser encontrado através do link [Segmentação dos Clientes](notebooks/02.Clusterizacao_clientes_sem_PCA.ipynb)
 
-Através do ‘Silhouette Method’ e ‘Elbow Method’ foi definido que a segmentação dos clientes ocorreria em 3 clusters, conforme análise dos gráficos abaixo
+Os dados tratados da análise exploratória passaram por etapas de **preprocessamento**, como *One_Hot_Encoder, StandardScaler, PowerTransform e MinMaxScaler* para ajuste e normalização de escala, a fim de melhorar os resultados dos modelos de segmentação de clientes. 
+
+Através do ‘Silhouette Method’ e ‘Elbow Method’ foi definido que a segmentação dos clientes ocorreria em **3 Clusters**, conforme análise dos gráficos abaixo
 
 <div align="center"> <img src="relatorios/Elbow and Silhouette Method.png" title="Elbow e Silhouette Method " height="700"/> </div>
 
@@ -56,19 +58,23 @@ A maioria dos clientes de cada cluster tem perfil conforme a tabela abaixo:
 | Alta    | Alto                     | Provavelmente Não| Um pouco maior                                  | 29%                        | 0       |
 | Baixa   | Baixo                    | Provavelmente Sim| Geralmente não                                  | 9%                         | 1       |
 | Mediana | Mediano (variando)       | Provavelmente Sim| Menor                                           | 11%                        | 2       |
+
+Para maior detalhamento da segmentação dos clientes em cada feature, os links a seguir demonstram a segmentação dos clientes para as [Segmentação - Features Numéricas](relatorios/Separacao%20dos%20Clusters%20-%20Boxplot%20para%20features%20numericas.png) e [Segmentação - Features Categóricas](relatorios/Separacao%20dos%20Clusters%20-%20Histograma%20para%20features%20categoricas.png)
  
 Os base de dados original do projeto, após passar pelo tratamento dos dados e a segmentação dos clientes em cada clusters, foi extraída com o nome ‘customers_clustered.csv’ e está na pasta ‘./dados’
 
 
 ### 3) Modelo Preditivo - Classificação
 
-Para *Seleção de Features* foi dotado os testes estatísticos de Mann-Whitneyu e Qui-Quadrado para eliminar features que não influenciavam a coluna ‘Response’ referente a campanha de marketing piloto. Posteriormente foi aplicado as mesmas etapas de *preprocessamento* dos dados descritas na etapa de segmentação de clientes acima. 
+O notebook para essa etapa do projeto pode ser encontrado através do link [Modelo de Classificação](notebooks/03.Modelo_classificacao_campanha_marketingipynb)
 
-Diversos *Modelos de Classificação* - como LogisticRegression, DecisionTreeClassifier, XGBClassifier, LGBMClassifier, SVC, KNeighborsClassifier -  foram treinados e submetidos à validação cruzada para avaliar seus resultados em métricas como recall, precisão, acurácia, área de baixo da curva ROC e curva precisão-recall
+Para **Seleção de Features** foi dotado os **Testes Estatísticos** de *Mann-Whitneyu e Qui-Quadrado* para eliminar features que não influenciavam a coluna ‘Response’ referente a campanha de marketing piloto. Posteriormente foi aplicado as mesmas etapas de *preprocessamento* dos dados descritas na etapa de segmentação de clientes acima. 
 
-Nessa aplicação é pior não oferecer a campanha para um possível comprador, do que oferecer pra alguém que não vai comprar. Portanto, para esse problema o *recall* é mais importante que a precisão. Mas também é bom ter um balanço de precisão e recall para não gastar dinheiro excessivamente nas campanhas de marketing com clientes que não serão influenciados pela campanha, então a métrica *average_precision* também deve ser levada em consideração para escolha do melhor modelo.
+Diversos **Modelos de Classificação** - como *LogisticRegression, DecisionTreeClassifier, XGBClassifier, LGBMClassifier, SVC, KNeighborsClassifier* -  foram treinados e submetidos à validação cruzada para avaliar seus resultados em métricas como recall, precisão, acurácia, área de baixo da curva ROC e curva precisão-recall
 
-Baseado nessas métricas o modelo que apresentou melhores resultados foi o *LogisticRegression*, que ainda foi otimizado através do GridSearch com grade de parâmetros para maximizar ‘recall’. Para esse modelo otimizado, foi analizado os coeficientes da regressão para entender quais features tem maior influencia (positiva e negativa) na variável alvo ‘Response’ referente à taxa de resposta das campanhas de marketing. O gráfico dos coeficientes de cada feature pode ser visto abaixo:
+**Métricas** - Nessa aplicação é pior não oferecer a campanha para um possível comprador, do que oferecer pra alguém que não vai comprar. Portanto, para esse problema o *recall* é mais importante que a precisão. Mas também é bom ter um balanço de precisão e recall para não gastar dinheiro excessivamente nas campanhas de marketing com clientes que não serão influenciados pela campanha, então a métrica *average_precision* também deve ser levada em consideração para escolha do melhor modelo.
+
+Baseado nessas métricas o modelo que apresentou melhores resultados foi o **LogisticRegression**, que ainda foi otimizado através do *GridSearch* com grade de parâmetros para maximizar ‘recall’. Para esse modelo otimizado, foi analizado os coeficientes da regressão para entender quais features tem maior influencia (positiva e negativa) na variável alvo ‘Response’ referente à taxa de resposta das campanhas de marketing. O gráfico dos coeficientes de cada feature pode ser visto abaixo:
 
 <div align="center"> <img src="relatorios/Coeficientes do modelo regressao logistica.png" title="Coeficientes " height="700"/> </div>
 
@@ -81,11 +87,11 @@ Baseado nas features acima, o perfil de cliente que deverá ter o direcionamento
 - Clientes que preferem comprar mais carnes e não tanto vinhos
 - Clientes com maiores níveis educacionais (PHD), evitar clientes com educação básica apenas
 
-A matriz de confusão do modelo de classificação otimizado obtido nesse projeto pode ser vista na imagem abaixo.
+A **Matriz de Confusão** do modelo de classificação otimizado obtido nesse projeto pode ser vista na imagem abaixo.
 
-<div align="center"> <img src="relatorios/Matriz de confusao.png" title="Matriz de Confusao " height="700"/> </div>
+<div align="center"> <img src="relatorios/Matriz de confusao.png" title="Matriz de Confusao " height="300"/> </div>
 
-**Estimando o ROI - Retorno do Investimento**
+### **Estimando o ROI - Retorno do Investimento**
 
 Baseado na campanha piloto aplicada em 2240 clientes, que teve custo de 6.720MU e receita de 3.674MU concluímos que:
 - Custo por cliente da campanha piloto: 3037,97
@@ -93,11 +99,21 @@ Baseado na campanha piloto aplicada em 2240 clientes, que teve custo de 6.720MU 
 
 Aplicando esses dados de custo e receita da campanha piloto por cliente, nos resultados obtidos conforme a matriz de confusão acima, também podemos estimar o custo, receita e ROI bruto e percentual da próxima campanha de marketing utilizando o modelo preditivo criado nesse projeto.
 
-CAMPANHA | GASTO | RECEITA | ROI BRUTO | ROI (%)
----------|-------|---------|-----------|---------
-Piloto | 6.720MU | 3.674MU | <font color='red'> -3.046MU | <font color='red'>- 45%
-Nova (Previsão) | 18.136MU | 31.113MU | <font color='green'>12.976MU | <font color='green'>72%
+CAMPANHA                     | GASTO    | RECEITA  | ROI BRUTO   | ROI (%)
+-----------------------------|----------|----------|------------ |---------
+Piloto                       | 6.720MU  | 3.674MU  |-3.046MU 🔴  | - 45% 🔴 
+Previsão da Próxima Campanha | 18.136MU | 31.113MU | 12.976MU 🟢 | 72% 🟢
 
+**Conclusão**: com esse projeto de ciência dos dados conseguimos sair de uma campanha piloto com 45% de prejuízo para um modelo cuja previsão é gerar um ROI referente à 72% de lucro sobre o investimento da campanha de marketing.
+
+
+### Apresentação Resumida do Projeto
+
+Como foi solicitado nos entregáveis do projeto, foi criado uma apresentação Power Point com as informações resumidas do projeto. 
+
+Esse arquivo está no diretório principal e pode ser obtido através do link [Apresentação_Projeto.pptx](Apresentacao_Projeto.pptx) (devido tamanho do arquivo a pré-visualização não está disponível, sendo necessário fazer o download do arquivo para acessá-lo).
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 ## Organização de pastas do projeto
 
@@ -123,9 +139,3 @@ Nova (Previsão) | 18.136MU | 31.113MU | <font color='green'>12.976MU | <font co
 ├── relatorios         <- Análises geradas em HTML, PDF, gráficos e figuras gerados para serem usados em relatórios
 |
 ├── referencias        <- Pasta onde está o dicionário de dados do projeto
-```
-
-
-## Como reproduzir o projeto
-
-TODO
