@@ -47,7 +47,7 @@ Os dados tratados da análise exploratória passaram por etapas de **preprocessa
 
 Através do ‘Silhouette Method’ e ‘Elbow Method’ foi definido que a segmentação dos clientes ocorreria em **3 Clusters**, conforme análise dos gráficos abaixo
 
-<div align="center"> <img src="relatorios/Elbow and Silhouette Method.png" title="Elbow e Silhouette Method " height="700"/> </div>
+<div align="center"> <img src="relatorios/Elbow and Silhouette Method.png" title="Elbow e Silhouette Method " height="300"/> </div>
 
 Com o modelo **KMeans** segmentamos os clientes em 3 clusters.
 
@@ -59,7 +59,18 @@ A maioria dos clientes de cada cluster tem perfil conforme a tabela abaixo:
 | Baixa   | Baixo                    | Provavelmente Sim| Geralmente não                                  | 9%                         | 1       |
 | Mediana | Mediano (variando)       | Provavelmente Sim| Menor                                           | 11%                        | 2       |
 
-Para maior detalhamento da segmentação dos clientes em cada feature, os links a seguir demonstram a segmentação dos clientes para as [Segmentação - Features Numéricas](relatorios/Separacao%20dos%20Clusters%20-%20Boxplot%20para%20features%20numericas.png) e [Segmentação - Features Categóricas](relatorios/Separacao%20dos%20Clusters%20-%20Histograma%20para%20features%20categoricas.png)
+Para maior detalhamento da segmentação dos clientes em cada feature, pode-se clicar nas imagens abaixo para verificar como ocorreu a ficou subdividida a segmentação dos clientes em cada feature numérica (imagem a esquerda) e feature categórica (imagem a direita)
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="relatorios/Separacao dos Clusters - Boxplot para features numericas.png" title="Boxplot dos Clusters" height="500"/>
+    </td>
+    <td align="center">
+      <img src="relatorios/Separacao dos Clusters - Histograma para features categoricas.png" title="Histograma dos Clusters" height="500"/>
+    </td>
+  </tr>
+</table>
  
 Os base de dados original do projeto, após passar pelo tratamento dos dados e a segmentação dos clientes em cada clusters, foi extraída com o nome ‘customers_clustered.csv’ e está na pasta ‘./dados’
 
@@ -71,6 +82,8 @@ O notebook para essa etapa do projeto pode ser encontrado através do link [Mode
 Para **Seleção de Features** foi dotado os **Testes Estatísticos** de *Mann-Whitneyu e Qui-Quadrado* para eliminar features que não influenciavam a coluna ‘Response’ referente a campanha de marketing piloto. Posteriormente foi aplicado as mesmas etapas de *preprocessamento* dos dados descritas na etapa de segmentação de clientes acima. 
 
 Diversos **Modelos de Classificação** - como *LogisticRegression, DecisionTreeClassifier, XGBClassifier, LGBMClassifier, SVC, KNeighborsClassifier* -  foram treinados e submetidos à validação cruzada para avaliar seus resultados em métricas como recall, precisão, acurácia, área de baixo da curva ROC e curva precisão-recall
+
+<div align="center"> <img src="relatorios/Comparando diferentes modelos de classificacao.png" title="Modelos " height="700"/> </div>
 
 **Métricas** - Nessa aplicação é pior não oferecer a campanha para um possível comprador, do que oferecer pra alguém que não vai comprar. Portanto, para esse problema o *recall* é mais importante que a precisão. Mas também é bom ter um balanço de precisão e recall para não gastar dinheiro excessivamente nas campanhas de marketing com clientes que não serão influenciados pela campanha, então a métrica *average_precision* também deve ser levada em consideração para escolha do melhor modelo.
 
@@ -106,6 +119,7 @@ Previsão da Próxima Campanha | 18.136MU | 31.113MU | 12.976MU 🟢 | 72% 🟢
 
 **Conclusão**: com esse projeto de ciência dos dados conseguimos sair de uma campanha piloto com 45% de prejuízo para um modelo cuja previsão é gerar um ROI referente à 72% de lucro sobre o investimento da campanha de marketing.
 
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Apresentação Resumida do Projeto
 
